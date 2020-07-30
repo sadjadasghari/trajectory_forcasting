@@ -3,5 +3,6 @@ matplotlib
 numpy
 pyzmq
 sklearn
+scipy
 tensorflow-gpu==1.15
 
