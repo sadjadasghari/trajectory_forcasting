@@ -1,4 +1,7 @@
-keras
+keras==2.3.1
 matplotlib
 numpy
 pyzmq
+sklearn
+tensorflow-gpu==1.15
+
