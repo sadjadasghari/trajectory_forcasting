@@ -11,7 +11,7 @@ setup(name='traj_pred',
       tests_require=['pytest'],
       install_requires = [
         'numpy',
-        'matplotlib',
+#         'matplotlib',
         'pyzmq',
         'keras'
         ],
