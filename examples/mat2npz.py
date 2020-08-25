@@ -12,24 +12,49 @@ size_perturb_trials = sio.loadmat('../input/Size_3DTrajectores_10Subs.mat')
 print(size_perturb_trials.keys())
 i,j = size_perturb_trials['Trajectories3D_SubByCondByTrials'].shape # number of subjects x number of experiments  (10x35)
 subject = []
-trajectories = []
+times_train = []
+trajectories_train = []
+times_test = []
+trajectories_test = []
+times_all = []
+trajectories_all = []
 min_shape = 225
-max_shape = 231
+max_shape = 150
 for ii in range(i):  # for each subject
     subject.append(size_perturb_trials['Trajectories3D_SubByCondByTrials'][ii]) # 1x35, each cell includes number of trials per blockx10
     for jj in range(j):
         trials = subject[ii][jj]  # each experiment, i.e. 1x45: number of attempts
-        for t in trials[0]:
-            trajectory = t[:, 0:4]  # trial  # i.e. 173x10 which is Tx10 variables, we want variables [2:5] which is wrist XYZ coords
-            start_ind = round((trajectory.shape[0] - 150) / 2)   # finding start ind
+        for t in trials[0][0:-1]:
+
+            trajectory = t[:, 1:4]  # trial  # i.e. 173x10 which is Tx10 variables, we want variables [2:5] which is wrist XYZ coords
+            start_ind = round((trajectory.shape[0] - 150) / 2)   # finding start ind, min length of original trajectories: 153, max: 286
             end_ind = start_ind + 150  # getting a subset of trajectory with length of 150, from the middle of traj.
-            trajectories.append(trajectory[start_ind:end_ind, :])
+            trajectories_train.append(trajectory[start_ind:end_ind, :])
+            time = t[start_ind:end_ind, 0]
+            times_train.append(time)
+            trajectories_all.append(trajectory[start_ind:end_ind, :])
+            times_all.append(time)
             # if min_shape > t.shape[0]:
             #     min_shape = t.shape[0]
             # if max_shape < t.shape[0]:
             #     max_shape = t.shape[0]
-
-# np.savez('Size_3DTrajectores_10Subs.npz', X=trajectories, Times=Times)  # x=np.arange(3),y=np.ones((3,3)),z=np.array(3))
+        trajectory = trials[0][-1]
+        start_ind = round(
+            (trajectory.shape[0] - 150) / 2)  # finding start ind, min length of original trajectories: 153, max: 286
+        end_ind = start_ind + 150  # getting a subset of trajectory with length of 150, from the middle of traj.
+        trajectories_test.append(trajectory[start_ind:end_ind, :])
+        time = trajectory[start_ind:end_ind, 0]
+        times_test.append(time)
+        trajectories_all.append(trajectory[start_ind:end_ind, :])
+        times_all.append(time)
+# for t in trajectories:
+#     if min_shape > t.shape[0]:
+#         min_shape = t.shape[0]
+#     if max_shape < t.shape[0]:
+#         max_shape = t.shape[0]
+np.savez('Size_3DTrajectores_10Subs_train_7217.npz', X=np.array(trajectories_train), Times=np.array(times_train))  # x=np.arange(3),y=np.ones((3,3)),z=np.array(3))
+np.savez('Size_3DTrajectores_10Subs_test_350.npz', X=np.array(trajectories_test), Times=np.array(times_test))
+np.savez('Size_3DTrajectores_10Subs_all.npz', X=np.array(trajectories_all), Times=np.array(times_all))
 print(max_shape, min_shape)
 plt.hist([t.shape[0] for t in trajectories], bins=50, density=1)       # matplotlib version (plot)
 
