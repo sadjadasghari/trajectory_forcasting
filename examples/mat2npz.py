@@ -38,29 +38,29 @@ for ii in range(i):  # for each subject
             #     min_shape = t.shape[0]
             # if max_shape < t.shape[0]:
             #     max_shape = t.shape[0]
-        trajectory = trials[0][-1]
+        trajectory = trials[0][-1]  # [:, 1:4]
         start_ind = round(
             (trajectory.shape[0] - 150) / 2)  # finding start ind, min length of original trajectories: 153, max: 286
         end_ind = start_ind + 150  # getting a subset of trajectory with length of 150, from the middle of traj.
-        trajectories_test.append(trajectory[start_ind:end_ind, :])
+        trajectories_test.append(trajectory[start_ind:end_ind, 1:4])
         time = trajectory[start_ind:end_ind, 0]
         times_test.append(time)
-        trajectories_all.append(trajectory[start_ind:end_ind, :])
+        trajectories_all.append(trajectory[start_ind:end_ind, 1:4])
         times_all.append(time)
 # for t in trajectories:
 #     if min_shape > t.shape[0]:
 #         min_shape = t.shape[0]
 #     if max_shape < t.shape[0]:
 #         max_shape = t.shape[0]
-np.savez('Size_3DTrajectores_10Subs_train_7217.npz', X=np.array(trajectories_train), Times=np.array(times_train))  # x=np.arange(3),y=np.ones((3,3)),z=np.array(3))
-np.savez('Size_3DTrajectores_10Subs_test_350.npz', X=np.array(trajectories_test), Times=np.array(times_test))
-np.savez('Size_3DTrajectores_10Subs_all.npz', X=np.array(trajectories_all), Times=np.array(times_all))
+np.savez('Size_3DTrajectores_10Subs_train_7217_.npz', X=np.array(trajectories_train), Times=np.array(times_train))  # x=np.arange(3),y=np.ones((3,3)),z=np.array(3))
+np.savez('Size_3DTrajectores_10Subs_test_350_.npz', X=np.array(trajectories_test), Times=np.array(times_test))
+np.savez('Size_3DTrajectores_10Subs_all_.npz', X=np.array(trajectories_all), Times=np.array(times_all))
 print(max_shape, min_shape)
-plt.hist([t.shape[0] for t in trajectories], bins=50, density=1)       # matplotlib version (plot)
+plt.hist([t.shape[0] for t in trajectories_all], bins=50, density=1)       # matplotlib version (plot)
 
 # Compute the histogram with numpy and then plot it
 
-(n, bins) = np.histogram([t.shape[0] for t in trajectories], bins=50, density=True)  # NumPy version (no plot)
+(n, bins) = np.histogram([t.shape[0] for t in trajectories_all], bins=50, density=True)  # NumPy version (no plot)
 
 plt.plot(.5*(bins[1:]+bins[:-1]), n)
 
