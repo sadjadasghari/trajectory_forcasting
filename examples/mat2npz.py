@@ -8,6 +8,9 @@ data = np.load('../input/sim_data.npz')
 Times = data['Times']  # 2000 samples x 200 time stamps
 X = data['X']   # 2000x200x3 , 2000 trajectory samples of length 200 (time stamps) for xyz coordinates
 N = len(Times)  # number of samples = 2000
+# ToDo: use distance perturbation data for training
+# ToDo: put one condition out for training and use that as test set.
+# ToDo: pad rest of trajectory for shorter trajectories than max size (286)
 size_perturb_trials = sio.loadmat('../input/Size_3DTrajectores_10Subs.mat')
 print(size_perturb_trials.keys())
 i,j = size_perturb_trials['Trajectories3D_SubByCondByTrials'].shape # number of subjects x number of experiments  (10x35)
